@@ -1,4 +1,7 @@
 package com.ManagmentTask.Task.Respository;
 
-public interface TaskRespository {
+import com.ManagmentTask.Task.Entity.TaskEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface TaskRespository extends JpaRepository<TaskEntity,Long> {
 }
