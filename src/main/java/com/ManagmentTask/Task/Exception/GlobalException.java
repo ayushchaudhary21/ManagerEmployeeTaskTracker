@@ -40,6 +40,17 @@ public class GlobalException {
          );
          return new ResponseEntity<>(error,HttpStatus.INTERNAL_SERVER_ERROR);
     }
+    @ExceptionHandler(DublicateUser.class)
+    public ResponseEntity<ErrorResponse> handleDublicateUserName(DublicateUser ex)
+    {
+         ErrorResponse errorResponse=new ErrorResponse(
+                  HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                 ex.getMessage(),
+                 LocalDateTime.now()
+         );
+         return new ResponseEntity<>(errorResponse,HttpStatus.INTERNAL_SERVER_ERROR);
+
+    }
 
 
 }
