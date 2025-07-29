@@ -3,6 +3,7 @@ package com.ManagmentTask.Task.Controller;
 
 import com.ManagmentTask.Task.Entity.TaskEntity;
 import com.ManagmentTask.Task.Service.TaskServiceInterface;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,10 +38,11 @@ public class TaskController {
     }
     // Manager used this to assign the task to the specific employee
 
-    @GetMapping("asignedTask/{id/{taskId}}")
+    @GetMapping("asignedTask/{id}/{taskId}")
     public ResponseEntity<String> assignedTask(@PathVariable ("id") long employeeId,
                                                @PathVariable ("taskId")long taskId)
     {
+
         return new ResponseEntity<>(taskServiceInterface.assignedTask(employeeId,taskId),HttpStatus.OK);
     }
 

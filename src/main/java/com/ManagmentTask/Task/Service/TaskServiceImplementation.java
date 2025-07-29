@@ -62,17 +62,30 @@ public class TaskServiceImplementation implements TaskServiceInterface {
                 if (taskEntityDb.get().getAssignedTo() == null) {
 
                     taskEntityDb.get().setAssignedTo(employeeEntityDb.get());
-                   return "Task "+taskId+"is assigned to"+employeeId;
+                   return "Task " +taskId+ "is assigned to "+ employeeId;
 
-                }
-                throw new MultiTaskAssigned("Task is Already assigend");
-            }   throw new EmployeeNotFound("There is no employee with id : "+employeeId);
+                }throw new MultiTaskAssigned("Task is Already assigend");
+
+            } throw new EmployeeNotFound("There is no employee with id : "+employeeId);
+
         }throw new TaskNotFound("there is no task with id :" +taskId);
 
     }
 
     @Override
     public String updateStatus(long taskId, long employeeId, String status) {
+     Optional<EmployeeEntity> employeeEntityOpt=employeeRepository.findById(employeeId);
+       if (employeeEntityOpt.isPresent())
+       {
+           Optional<TaskEntity>taskEntityOpt=taskRepository.findById(taskId);
+           if(taskEntityOpt.isPresent()) {
+               taskEntityOpt.get().setStatus(status);
+               taskRepository.save(taskEntityOpt.get());
+               return "Task Status is updated + " + status;
 
+           }throw new TaskNotFound("There is no task with id "+taskId);
+
+       }throw new EmployeeNotFound("There is no Employee with id "+employeeId);
     }
+
 }
