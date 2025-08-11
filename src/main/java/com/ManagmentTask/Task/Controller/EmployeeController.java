@@ -5,30 +5,34 @@ import com.ManagmentTask.Task.Service.EmployeeServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
-    @Autowired
-    private EmployeeServiceInterface employeeServiceInterface;
+   private final EmployeeServiceInterface employeeServiceInterface;
 
-    @PostMapping
-    public ResponseEntity<EmployeeEntity> createEmployee(@RequestBody EmployeeEntity employeeEntity) {
-        return new ResponseEntity<>(employeeServiceInterface.createEmpoyee(employeeEntity), HttpStatus.CREATED);
+    public EmployeeController(EmployeeServiceInterface employeeServiceInterface) {
+        this.employeeServiceInterface = employeeServiceInterface;
     }
 
-    @DeleteMapping("/deleteByID/{id}")
-    public ResponseEntity<?> deleteEmployee(@PathVariable("id") long id) {
-        employeeServiceInterface.deleteById(id);
+
+    @DeleteMapping("/deleteUserName")
+    public ResponseEntity<?> deleteEmployee() {
+        Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
+        String userName=authentication.getName();
+        employeeServiceInterface.deleteByUserName(userName);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("update/{id}")
-    public ResponseEntity<?> updateEmployee(@PathVariable("id") long id,
-                                            @RequestBody EmployeeEntity employeeEntity)
+    @PutMapping("update")
+    public ResponseEntity<?> updateEmployee(@RequestBody EmployeeEntity employeeEntity)
     {
-        employeeServiceInterface.updateEmployee(id,employeeEntity);
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        String userName=authentication.getName();
+        employeeServiceInterface.updateEmployee(userName,employeeEntity);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 //    @PutMapping("updatetask/{task}")

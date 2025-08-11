@@ -51,11 +51,23 @@ public class GlobalException {
          return new ResponseEntity<>(errorResponse,HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
+
     @ExceptionHandler(MultiTaskAssigned.class)
     public ResponseEntity<ErrorResponse> handleMultiTaskAssigned(MultiTaskAssigned ex)
     {
          ErrorResponse errorResponse=new ErrorResponse(
                   HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                 ex.getMessage(),
+                 LocalDateTime.now()
+         );
+         return new ResponseEntity<>(errorResponse,HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(NotDetermineRole.class)
+    public ResponseEntity<ErrorResponse>handleWrongRole(NotDetermineRole ex)
+    {
+         ErrorResponse errorResponse=new ErrorResponse(
+                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                  ex.getMessage(),
                  LocalDateTime.now()
          );

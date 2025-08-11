@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface EmployeeServiceInterface {
    EmployeeEntity createEmpoyee(EmployeeEntity employeeEntity);
-   String deleteById(long id);
-  String updateEmployee(long id,EmployeeEntity employeeEntity);
+   String deleteByUserName(String userName);
+  String updateEmployee(String userName,EmployeeEntity employeeEntity);
 
 }

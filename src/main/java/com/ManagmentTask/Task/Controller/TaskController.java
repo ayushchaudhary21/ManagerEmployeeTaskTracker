@@ -22,6 +22,7 @@ public class TaskController {
     public ResponseEntity<String> createtask(@PathVariable ("id") long id, @RequestBody TaskEntity taskEntity)
     {
           return new ResponseEntity<>(taskServiceInterface.generateTask(id,taskEntity), HttpStatus.CREATED);
+          // UserName is from the manager that manager could create the task. n
     }
     @GetMapping("createdTaskByManager/{id}")
     public ResponseEntity<List<TaskEntity>> createdTaskByManager(@PathVariable ("id") long id)
