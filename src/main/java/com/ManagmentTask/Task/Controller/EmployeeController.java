@@ -19,7 +19,7 @@ public class EmployeeController {
     }
 
 
-    @DeleteMapping("/deleteUserName")
+    @DeleteMapping("/delete")
     public ResponseEntity<?> deleteEmployee() {
         Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
         String userName=authentication.getName();
@@ -27,13 +27,12 @@ public class EmployeeController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("update")
-    public ResponseEntity<?> updateEmployee(@RequestBody EmployeeEntity employeeEntity)
+    @PutMapping("/update")
+    public ResponseEntity<String > updateEmployee(@RequestBody EmployeeEntity employeeEntity)
     {
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
         String userName=authentication.getName();
-        employeeServiceInterface.updateEmployee(userName,employeeEntity);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(employeeServiceInterface.updateEmployee(userName,employeeEntity),HttpStatus.OK);
+
     }
-//    @PutMapping("updatetask/{task}")
 }

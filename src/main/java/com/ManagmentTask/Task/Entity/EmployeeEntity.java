@@ -1,5 +1,6 @@
 package com.ManagmentTask.Task.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,9 +24,12 @@ public class EmployeeEntity {
     private String roles;
 
     @OneToMany(mappedBy = "assignedBy",cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<TaskEntity>CreatedTask;
 
+
     @OneToMany(mappedBy = "assignedTo",cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<TaskEntity>assinedTask;
 
 

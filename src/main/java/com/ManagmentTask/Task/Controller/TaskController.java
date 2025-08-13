@@ -7,8 +7,11 @@ import com.ManagmentTask.Task.Service.TaskServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Struct;
 import java.util.List;
 
 
@@ -18,41 +21,53 @@ public class TaskController {
     @Autowired
    private TaskServiceInterface taskServiceInterface;
 
-    @PostMapping("crate/{id}")
-    public ResponseEntity<String> createtask(@PathVariable ("id") long id, @RequestBody TaskEntity taskEntity)
+    @PostMapping("/create")
+    public ResponseEntity<String> createtask( @RequestBody TaskEntity taskEntity)
     {
-          return new ResponseEntity<>(taskServiceInterface.generateTask(id,taskEntity), HttpStatus.CREATED);
-          // UserName is from the manager that manager could create the task. n
+        Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
+        String userName=authentication.getName();
+          return new ResponseEntity<>(taskServiceInterface.generateTask(userName,taskEntity), HttpStatus.CREATED);
+          // The UserName is from the manager that manager could create the task.
     }
-    @GetMapping("createdTaskByManager/{id}")
-    public ResponseEntity<List<TaskEntity>> createdTaskByManager(@PathVariable ("id") long id)
+    @GetMapping("/createdTaskByManager")
+    // list of a task that is created by the manager.
+    public ResponseEntity<List<TaskEntity>> createdTaskByManager()
     {
-          return new ResponseEntity<>(taskServiceInterface.returnAllTask(id),HttpStatus.OK);
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        String userName=authentication.getName();
+          return new ResponseEntity<>(taskServiceInterface.returnAllTask(userName),HttpStatus.OK);
     }
-    // Employee to all the task that are created .
+    // Employee to all the task that is created.
 
-    @GetMapping("checkTask/{id}")
-    public ResponseEntity<List<TaskEntity>> checkTask(@PathVariable("id") long employeeId)
+    @GetMapping("/checkTask")
+    public ResponseEntity<List<TaskEntity>> checkTask()
     {
-        return new ResponseEntity<>(taskServiceInterface.returnTask(employeeId),HttpStatus.OK);
-    }
-    // Manager used this to assign the task to the specific employee
-
-    @GetMapping("asignedTask/{id}/{taskId}")
-    public ResponseEntity<String> assignedTask(@PathVariable ("id") long employeeId,
-                                               @PathVariable ("taskId")long taskId)
-    {
-
-        return new ResponseEntity<>(taskServiceInterface.assignedTask(employeeId,taskId),HttpStatus.OK);
+        // All the tasks that are given to the particular employee or person
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        String userName=authentication.getName();
+        return new ResponseEntity<>(taskServiceInterface.returnTask(userName),HttpStatus.OK);
     }
 
-    // employee update the task
-    @PutMapping("updateStatus/{taskId}/{id}")
-    public ResponseEntity<String>updateStatus(@PathVariable ("taskId") long taskId,
-                                              @PathVariable("id") long employeeId,
-                                              @RequestBody String status)
-    {
-        return  new ResponseEntity<>(taskServiceInterface.updateStatus(taskId,employeeId,status),HttpStatus.OK);
-    }
+    // The Manager used this to assign the task to the specific employee
+
+//    @GetMapping("asignedTask/{taskId}")
+//    public ResponseEntity<String> assignedTask(@PathVariable ("taskId")long taskId)
+//    {
+//        // Asigned the particular task to the particular employee
+//        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+//        String userName=authentication.getName();
+//        return new ResponseEntity<>(taskServiceInterface.assignedTask(userName,taskId),HttpStatus.OK);
+//    }
+
+//    // employee update the task
+//    @PutMapping("updateStatus/{taskId}")
+//    public ResponseEntity<String>updateStatus(@PathVariable ("taskId") long taskId,
+//                                              @RequestBody String status)
+//    {
+//        // update the status of a task that assigned.
+//        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+//        String userName=authentication.getName();
+//        return  new ResponseEntity<>(taskServiceInterface.updateStatus(taskId,userName,status),HttpStatus.OK);
+//    }
 
 }

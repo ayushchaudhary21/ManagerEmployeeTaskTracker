@@ -27,12 +27,12 @@ public class PublicController {
         {
         return new ResponseEntity<>(employeeServiceInterface.createEmpoyee(employeeEntity), HttpStatus.CREATED);
         }
-        throw new NotDetermineRole("Role is incorreceed "+employeeEntity.getRoles());
+        throw new NotDetermineRole("Role is incorrect "+employeeEntity.getRoles());
     }
     @PostMapping("/createManager")
     public ResponseEntity<EmployeeEntity>createManager(@RequestBody EmployeeEntity employeeEntity)
     {
-        if(employeeEntity.getRoles().equalsIgnoreCase(",manager"))
+        if(employeeEntity.getRoles().equalsIgnoreCase("manager"))
         {
             return new ResponseEntity<>(employeeServiceInterface.createEmpoyee(employeeEntity),HttpStatus.CREATED);
         }

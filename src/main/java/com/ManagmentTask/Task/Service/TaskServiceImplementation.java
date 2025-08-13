@@ -22,70 +22,70 @@ public class TaskServiceImplementation implements TaskServiceInterface {
 
 
     @Override
-    public String generateTask(long id, TaskEntity taskEntity) {
-        Optional<EmployeeEntity> employeeEntityDb=employeeRepository.findById(id);
+    public String generateTask(String userName, TaskEntity taskEntity) {
+        Optional<EmployeeEntity> employeeEntityDb=employeeRepository.findByUserName(userName);
          if(employeeEntityDb.isPresent() && employeeEntityDb.get().getRoles().equalsIgnoreCase("manager"))
          {
              taskEntity.setAssignedBy(employeeEntityDb.get());
              taskRepository.save(taskEntity);
-             return " Task created successfully by Manager ID: " + id;
+             return " Task created successfully by Manager ID: " + employeeEntityDb.get().getEmployeeId();
          }
-         throw  new EmployeeNotFound(" Task creation failed: Employee with ID " + id + " is not a manager or does not exist.");
+         throw  new EmployeeNotFound(" Task creation failed: Employee with ID " + employeeEntityDb.get().getEmployeeId() + " is not a manager or does not exist.");
     }
 
     @Override
-    public List<TaskEntity> returnAllTask(long managerId) {
-        Optional<EmployeeEntity>employeeEntityDB=employeeRepository.findById(managerId);
+    public List<TaskEntity> returnAllTask(String userName) {
+        Optional<EmployeeEntity>employeeEntityDB=employeeRepository.findByUserName(userName);
         if(employeeEntityDB.isPresent() && employeeEntityDB.get().getRoles().equalsIgnoreCase("manager"))
         {
-            return taskRepository.findByAssignedBy_EmployeeId(managerId);
+            return taskRepository.findByAssignedBy_EmployeeId(employeeEntityDB.get().getEmployeeId());
         }
-        throw new EmployeeNotFound("No task are assigned by the manager id :"+managerId);
+        throw new EmployeeNotFound("No task are assigned by the manager userName : "+userName );
     }
 
     @Override
-    public List<TaskEntity> returnTask(long employeeId) {
-       Optional<EmployeeEntity>employeeEntity=employeeRepository.findById(employeeId);
-       if(employeeEntity.isPresent())
+    public List<TaskEntity> returnTask(String userName) {
+       Optional<EmployeeEntity> employeeEntityOptional =employeeRepository.findByUserName(userName);
+       if(employeeEntityOptional.isPresent())
        {
-           return  taskRepository.findByAssignedTo_EmployeeId(employeeId);
-       }throw new EmployeeNotFound("There is no employee with id :"+employeeId);
+           return  taskRepository.findByAssignedTo_EmployeeId(employeeEntityOptional.get().getEmployeeId());
+       }throw new EmployeeNotFound("There is no employee with userName :"+userName);
     }
 
-    @Override
-    public String assignedTask(long employeeId, long taskId) {
-       Optional<TaskEntity> taskEntityDb=taskRepository.findById(taskId);
-       Optional<EmployeeEntity>employeeEntityDb=employeeRepository.findById(employeeId);
-        if(taskEntityDb.isPresent())
-        {
-            if(employeeEntityDb.isPresent()) {
-                if (taskEntityDb.get().getAssignedTo() == null) {
+//    @Override
+//    public String assignedTask(String userName, long taskId) {
+//       Optional<TaskEntity> taskEntityDb=taskRepository.findById(taskId);
+//       Optional<EmployeeEntity>employeeEntityDb=employeeRepository.findByUserName(userName);
+//        if(taskEntityDb.isPresent())
+//        {
+//            if(employeeEntityDb.isPresent()) {
+//                if (taskEntityDb.get().getAssignedTo() == null) {
+//
+//                    taskEntityDb.get().setAssignedTo(employeeEntityDb.get());
+//                   return "Task " +taskId+ "is assigned to "+ userName;
+//
+//                }throw new MultiTaskAssigned("Task is Already assigend");
+//
+//            } throw new EmployeeNotFound("There is no employee with userNamex : "+);
+//
+//        }throw new TaskNotFound("there is no task with id :" +taskId);
+//
+//    }
 
-                    taskEntityDb.get().setAssignedTo(employeeEntityDb.get());
-                   return "Task " +taskId+ "is assigned to "+ employeeId;
-
-                }throw new MultiTaskAssigned("Task is Already assigend");
-
-            } throw new EmployeeNotFound("There is no employee with id : "+employeeId);
-
-        }throw new TaskNotFound("there is no task with id :" +taskId);
-
-    }
-
-    @Override
-    public String updateStatus(long taskId, long employeeId, String status) {
-     Optional<EmployeeEntity> employeeEntityOpt=employeeRepository.findById(employeeId);
-       if (employeeEntityOpt.isPresent())
-       {
-           Optional<TaskEntity>taskEntityOpt=taskRepository.findById(taskId);
-           if(taskEntityOpt.isPresent()) {
-               taskEntityOpt.get().setStatus(status);
-               taskRepository.save(taskEntityOpt.get());
-               return "Task Status is updated + " + status;
-
-           }throw new TaskNotFound("There is no task with id "+taskId);
-
-       }throw new EmployeeNotFound("There is no Employee with id "+employeeId);
-    }
+//    @Override
+//    public String updateStatus(long taskId, long employeeId, String status) {
+//     Optional<EmployeeEntity> employeeEntityOpt=employeeRepository.findById(employeeId);
+//       if (employeeEntityOpt.isPresent())
+//       {
+//           Optional<TaskEntity>taskEntityOpt=taskRepository.findById(taskId);
+//           if(taskEntityOpt.isPresent()) {
+//               taskEntityOpt.get().setStatus(status);
+//               taskRepository.save(taskEntityOpt.get());
+//               return "Task Status is updated + " + status;
+//
+//           }throw new TaskNotFound("There is no task with id "+taskId);
+//
+//       }throw new EmployeeNotFound("There is no Employee with id "+employeeId);
+//    }
 
 }

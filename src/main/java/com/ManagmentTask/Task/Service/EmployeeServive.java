@@ -27,7 +27,7 @@ public class EmployeeServive implements EmployeeServiceInterface{
         Optional<EmployeeEntity>employeeEntityDb=employeeRepository.findByUserName(employeeEntity.getUserName());
         if(employeeEntityDb.isPresent())throw new DublicateUser("UserName already in use");
         else{
-            passwordEncoder.encode(employeeEntity.getPassword());
+            employeeEntity.setPassword(passwordEncoder.encode(employeeEntity.getPassword()));
             return employeeRepository.save(employeeEntity);
         }
 
@@ -47,16 +47,16 @@ public class EmployeeServive implements EmployeeServiceInterface{
         Optional<EmployeeEntity> employeeEntityOptional =employeeRepository.findByUserName(userName);
         if(employeeEntityOptional.isPresent())
         {
-              EmployeeEntity employeeEntity1= employeeEntityOptional.get();
+              EmployeeEntity employeeEntityDB = employeeEntityOptional.get();
               if(employeeEntity.getName()!=null)
               {
-                  employeeEntity1.setName(employeeEntity.getName());
+                  employeeEntityDB.setName(employeeEntity.getName());
               }
               if(employeeEntity.getPassword()!=null)
               {
-                  employeeEntity1.setPassword(employeeEntity.getPassword());
+                  employeeEntityDB.setPassword(passwordEncoder.encode(employeeEntity.getPassword()));
               }
-              employeeRepository.save(employeeEntity1);
+              employeeRepository.save(employeeEntityDB);
               return "Details of the user updated";
         }
         throw new EmployeeNotFound("There is no employee with the userName : "+userName);

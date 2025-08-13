@@ -7,11 +7,11 @@ import java.util.EnumMap;
 import java.util.List;
 
 public interface TaskServiceInterface {
-    String generateTask(long id, TaskEntity taskEntity);
+    String generateTask(String  userName, TaskEntity taskEntity);
     // Manager to see all the task assigned.
-    List<TaskEntity> returnAllTask(long managerId);
-    List<TaskEntity>returnTask(long employeeTask);
-    String assignedTask(long employeeId,long taskId);
-    String updateStatus(long taskId,long employeeId,String status);
+    List<TaskEntity> returnAllTask(String userName);
+    List<TaskEntity>returnTask(String userName);
+//    String assignedTask(String userName,long taskId);
+//    String updateStatus(long taskId,String userName,String status);
 
 }

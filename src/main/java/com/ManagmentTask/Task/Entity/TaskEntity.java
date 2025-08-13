@@ -1,5 +1,7 @@
 package com.ManagmentTask.Task.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,10 +24,12 @@ public class TaskEntity {
     private LocalDateTime generatedTime;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name="employee_id")
     private EmployeeEntity assignedTo;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name="manager_id")
     private EmployeeEntity assignedBy;
 
