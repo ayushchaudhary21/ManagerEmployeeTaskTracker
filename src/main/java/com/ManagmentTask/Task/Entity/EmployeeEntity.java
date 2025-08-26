@@ -16,7 +16,7 @@ public class EmployeeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long employeeId;
-    private String name;
+    private String employeeName;
 
     private String userName;
     private String password;
@@ -25,7 +25,7 @@ public class EmployeeEntity {
 
     @OneToMany(mappedBy = "assignedBy",cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<TaskEntity>CreatedTask;
+    private List<TaskEntity>createdTask;
 
 
     @OneToMany(mappedBy = "assignedTo",cascade = CascadeType.ALL)

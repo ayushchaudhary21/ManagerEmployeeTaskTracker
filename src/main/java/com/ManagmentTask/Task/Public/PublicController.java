@@ -1,5 +1,6 @@
 package com.ManagmentTask.Task.Public;
 
+import com.ManagmentTask.Task.DTOModel.EmployeeRequestModel;
 import com.ManagmentTask.Task.Entity.EmployeeEntity;
 import com.ManagmentTask.Task.Exception.NotDetermineRole;
 import com.ManagmentTask.Task.Service.EmployeeServiceInterface;
@@ -21,22 +22,22 @@ public class PublicController {
     }
     
     @PostMapping("/createEmployee")
-    public ResponseEntity<EmployeeEntity>createEmployee(@RequestBody EmployeeEntity employeeEntity)
+    public ResponseEntity<String>createEmployee(@RequestBody EmployeeRequestModel employeeRequestModel)
     {
-        if(employeeEntity.getRoles().equalsIgnoreCase("employee"))
+        if(employeeRequestModel.getRole().equalsIgnoreCase("employee"))
         {
-        return new ResponseEntity<>(employeeServiceInterface.createEmpoyee(employeeEntity), HttpStatus.CREATED);
+        return new ResponseEntity<>(employeeServiceInterface.createEmpoyee(employeeRequestModel), HttpStatus.CREATED);
         }
-        throw new NotDetermineRole("Role is incorrect "+employeeEntity.getRoles());
+        throw new NotDetermineRole("Role is incorrect "+employeeRequestModel.getRole());
     }
     @PostMapping("/createManager")
-    public ResponseEntity<EmployeeEntity>createManager(@RequestBody EmployeeEntity employeeEntity)
+    public ResponseEntity<String>createManager(@RequestBody EmployeeRequestModel employeeRequestModel)
     {
-        if(employeeEntity.getRoles().equalsIgnoreCase("manager"))
+        if(employeeRequestModel.getRole().equalsIgnoreCase("manager"))
         {
-            return new ResponseEntity<>(employeeServiceInterface.createEmpoyee(employeeEntity),HttpStatus.CREATED);
+            return new ResponseEntity<>(employeeServiceInterface.createEmpoyee(employeeRequestModel),HttpStatus.CREATED);
         }
-        throw new NotDetermineRole("Role is not Manager " +employeeEntity.getRoles());
+        throw new NotDetermineRole("Role is not Manager " +employeeRequestModel.getRole());
     }
     
 }

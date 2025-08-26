@@ -1,6 +1,8 @@
 package com.ManagmentTask.Task.Controller;
 
 
+import com.ManagmentTask.Task.DTOModel.TaskRequestModel;
+import com.ManagmentTask.Task.DTOModel.TaskResponseModel;
 import com.ManagmentTask.Task.Entity.TaskEntity;
 import com.ManagmentTask.Task.Service.TaskServiceInterface;
 
@@ -11,7 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Struct;
+
 import java.util.List;
 
 
@@ -22,16 +24,16 @@ public class TaskController {
    private TaskServiceInterface taskServiceInterface;
 
     @PostMapping("/create")
-    public ResponseEntity<String> createtask( @RequestBody TaskEntity taskEntity)
+    public ResponseEntity<String> createtask(@RequestBody TaskRequestModel taskRequestModel)
     {
         Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
         String userName=authentication.getName();
-          return new ResponseEntity<>(taskServiceInterface.generateTask(userName,taskEntity), HttpStatus.CREATED);
+          return new ResponseEntity<>(taskServiceInterface.generateTask(userName,taskRequestModel), HttpStatus.CREATED);
           // The UserName is from the manager that manager could create the task.
     }
-    @GetMapping("/createdTaskByManager")
-    // list of a task that is created by the manager.
-    public ResponseEntity<List<TaskEntity>> createdTaskByManager()
+    @GetMapping("/createTask")
+    // list of a task that is created by the manager fromm id.
+    public ResponseEntity<List<TaskResponseModel>> createdTaskByManager()
     {
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
         String userName=authentication.getName();
@@ -40,7 +42,7 @@ public class TaskController {
     // Employee to all the task that is created.
 
     @GetMapping("/checkTask")
-    public ResponseEntity<List<TaskEntity>> checkTask()
+    public ResponseEntity<List<TaskResponseModel>> checkTask()
     {
         // All the tasks that are given to the particular employee or person
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
