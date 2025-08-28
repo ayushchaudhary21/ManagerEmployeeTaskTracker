@@ -1,7 +1,8 @@
 package com.ManagmentTask.Task.Controller;
 
 
-import com.ManagmentTask.Task.Entity.TaskEntity;
+import com.ManagmentTask.Task.DTOModel.TaskRequestModel;
+import com.ManagmentTask.Task.DTOModel.TaskResponseModel;
 import com.ManagmentTask.Task.Service.TaskServiceInterface;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Struct;
+
 import java.util.List;
 
 
@@ -22,25 +23,25 @@ public class TaskController {
    private TaskServiceInterface taskServiceInterface;
 
     @PostMapping("/create")
-    public ResponseEntity<String> createtask( @RequestBody TaskEntity taskEntity)
+    public ResponseEntity<String> createtask(@RequestBody TaskRequestModel taskRequestModel)
     {
         Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
         String userName=authentication.getName();
-          return new ResponseEntity<>(taskServiceInterface.generateTask(userName,taskEntity), HttpStatus.CREATED);
+          return new ResponseEntity<>(taskServiceInterface.generateTask(userName,taskRequestModel), HttpStatus.CREATED);
           // The UserName is from the manager that manager could create the task.
     }
-    @GetMapping("/createdTaskByManager")
-    // list of a task that is created by the manager.
-    public ResponseEntity<List<TaskEntity>> createdTaskByManager()
+    @GetMapping("/managerTask")
+    // list of a task that is created by the manager fromm id.
+    public ResponseEntity<List<TaskResponseModel>> createdTaskByManager()
     {
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
         String userName=authentication.getName();
           return new ResponseEntity<>(taskServiceInterface.returnAllTask(userName),HttpStatus.OK);
     }
-    // Employee to all the task that is created.
 
+    // Employee to all the task that is assigned to thim
     @GetMapping("/checkTask")
-    public ResponseEntity<List<TaskEntity>> checkTask()
+    public ResponseEntity<List<TaskResponseModel>> checkTask()
     {
         // All the tasks that are given to the particular employee or person
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
@@ -48,26 +49,28 @@ public class TaskController {
         return new ResponseEntity<>(taskServiceInterface.returnTask(userName),HttpStatus.OK);
     }
 
-    // The Manager used this to assign the task to the specific employee
 
-//    @GetMapping("asignedTask/{taskId}")
-//    public ResponseEntity<String> assignedTask(@PathVariable ("taskId")long taskId)
-//    {
-//        // Asigned the particular task to the particular employee
-//        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-//        String userName=authentication.getName();
-//        return new ResponseEntity<>(taskServiceInterface.assignedTask(userName,taskId),HttpStatus.OK);
-//    }
+//     The Manager used this to assign the task to the specific employee
 
-//    // employee update the task
-//    @PutMapping("updateStatus/{taskId}")
-//    public ResponseEntity<String>updateStatus(@PathVariable ("taskId") long taskId,
-//                                              @RequestBody String status)
-//    {
-//        // update the status of a task that assigned.
-//        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-//        String userName=authentication.getName();
-//        return  new ResponseEntity<>(taskServiceInterface.updateStatus(taskId,userName,status),HttpStatus.OK);
-//    }
+    @PostMapping("assignedTask/{title}/{employee}")
+    public ResponseEntity<String> assignedTask(@PathVariable ("title")String title,
+                                               @PathVariable("employee") String employeeUserName)
+    {
+        // Asigned the particular task to the particular employee
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        String manaerUserName =authentication.getName();
+        return new ResponseEntity<>(taskServiceInterface.assignedTask(manaerUserName,title,employeeUserName),HttpStatus.OK);
+    }
+
+    // employee update the task
+    @PatchMapping("updateStatus/{taskTitle}")
+    public ResponseEntity<String>updateStatus(@PathVariable ("taskTitle") String title,
+                                              @RequestBody String status)
+    {
+        // update the status of a task that assigned.
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        String userName=authentication.getName();
+        return  new ResponseEntity<>(taskServiceInterface.updateStatus(title,userName,status),HttpStatus.OK);
+    }
 
 }

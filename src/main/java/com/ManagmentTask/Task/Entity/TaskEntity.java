@@ -26,12 +26,12 @@ public class TaskEntity {
     @ManyToOne
     @JsonBackReference
     @JoinColumn(name="employee_id")
-    private EmployeeEntity assignedTo;
+    private EmployeeEntity taskAssignedTo;
 
     @ManyToOne
     @JsonBackReference
     @JoinColumn(name="manager_id")
-    private EmployeeEntity assignedBy;
+    private EmployeeEntity taskAssignedBy;
 
     @PrePersist
     public void onCreate() {
