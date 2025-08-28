@@ -28,7 +28,7 @@ public class PublicController {
         {
         return new ResponseEntity<>(employeeServiceInterface.createEmpoyee(employeeRequestModel), HttpStatus.CREATED);
         }
-        throw new NotDetermineRole("Role is incorrect "+employeeRequestModel.getRole());
+        throw new NotDetermineRole("Role is incorrect ");
     }
     @PostMapping("/createManager")
     public ResponseEntity<String>createManager(@RequestBody EmployeeRequestModel employeeRequestModel)
@@ -37,7 +37,7 @@ public class PublicController {
         {
             return new ResponseEntity<>(employeeServiceInterface.createEmpoyee(employeeRequestModel),HttpStatus.CREATED);
         }
-        throw new NotDetermineRole("Role is not Manager " +employeeRequestModel.getRole());
+        throw new NotDetermineRole("Role is not Manager");
     }
     
 }

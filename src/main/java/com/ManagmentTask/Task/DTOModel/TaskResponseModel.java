@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+
 @Builder
 
 public class TaskResponseModel {
@@ -20,9 +20,18 @@ public class TaskResponseModel {
     private String status;
     private LocalDateTime generatedTime;
 
-    private Long assignedToId;
-    private String assignedToName;
+    private Long taskAssignedToId;
 
-    private Long assignedById;
-    private String assignedByName;
+    private Long taskAssignedById;
+
+    public TaskResponseModel(long taskId,String taskName, String title, String description, String status, LocalDateTime generatedTime,Long taskAssignedById,Long taskAssignedToId ) {
+        this.taskId=taskId;
+        this.taskName=taskName;
+        this.title=title;
+        this.description=description;
+        this.status=status;
+        this.generatedTime=generatedTime;
+        this.taskAssignedToId = taskAssignedToId;
+        this.taskAssignedById = taskAssignedById;
+    }
 }

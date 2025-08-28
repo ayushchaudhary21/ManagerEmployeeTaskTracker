@@ -23,12 +23,12 @@ public class EmployeeEntity {
 
     private String roles;
 
-    @OneToMany(mappedBy = "assignedBy",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "taskAssignedBy",cascade = CascadeType.ALL)
     @JsonIgnore
     private List<TaskEntity>createdTask;
 
 
-    @OneToMany(mappedBy = "assignedTo",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "taskAssignedTo",cascade = CascadeType.ALL)
     @JsonIgnore
     private List<TaskEntity>assinedTask;
 

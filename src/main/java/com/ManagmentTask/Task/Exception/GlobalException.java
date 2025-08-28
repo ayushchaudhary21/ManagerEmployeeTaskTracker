@@ -73,4 +73,14 @@ public class GlobalException {
          );
          return new ResponseEntity<>(errorResponse,HttpStatus.INTERNAL_SERVER_ERROR);
     }
+    @ExceptionHandler(DublicateTask.class)
+    public ResponseEntity<ErrorResponse> handleRepeatedTask(DublicateTask ex)
+    {
+        ErrorResponse errorResponse=new ErrorResponse(
+                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                ex.getMessage(),
+                LocalDateTime.now()
+        );
+        return  new ResponseEntity<>(errorResponse,HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

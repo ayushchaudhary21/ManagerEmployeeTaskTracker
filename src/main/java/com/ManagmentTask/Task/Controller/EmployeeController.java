@@ -2,9 +2,7 @@ package com.ManagmentTask.Task.Controller;
 
 import com.ManagmentTask.Task.DTOModel.EmployeeRequestModel;
 import com.ManagmentTask.Task.DTOModel.EmployeeResponseModel;
-import com.ManagmentTask.Task.Entity.EmployeeEntity;
 import com.ManagmentTask.Task.Service.EmployeeServiceInterface;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

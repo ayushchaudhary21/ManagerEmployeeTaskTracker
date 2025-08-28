@@ -15,14 +15,14 @@ import java.util.Optional;
 
 @Service
 public class EmployeeService implements EmployeeServiceInterface{
-    @Autowired
-    private final EmployeeRepository employeeRepository;
 
-    public EmployeeService(EmployeeRepository employeeRepository) {
+    private final EmployeeRepository employeeRepository;
+    private final  PasswordEncoder passwordEncoder;
+    public EmployeeService(EmployeeRepository employeeRepository, PasswordEncoder passwordEncoder) {
         this.employeeRepository = employeeRepository;
+        this.passwordEncoder = passwordEncoder;
     }
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+
 
 
     @Override
@@ -33,7 +33,7 @@ public class EmployeeService implements EmployeeServiceInterface{
             EmployeeEntity employeeEntity=new EmployeeEntity();
             employeeEntity.setRoles(employeeRequestModel.getRole());
             employeeEntity.setUserName(employeeRequestModel.getUserName());
-            employeeEntity.setEmployeeName(employeeRequestModel.getEmployeename());
+            employeeEntity.setEmployeeName(employeeRequestModel.getEmployeeName());
             employeeEntity.setPassword(passwordEncoder.encode(employeeRequestModel.getPassword()));
             employeeRepository.save(employeeEntity);
             return  "User is Created";
@@ -63,7 +63,7 @@ public class EmployeeService implements EmployeeServiceInterface{
               }
               if(employeeEntityDb.getEmployeeName()!=null)
               {
-                  employeeEntityDb.setEmployeeName(employeeRequestModel.getEmployeename());
+                  employeeEntityDb.setEmployeeName(employeeRequestModel.getEmployeeName());
               }
               if(employeeEntityDb.getPassword()!=null)
               {

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class EmployeeRequestModel {
     private long employeeId;
-    private String Employeename;
+    private String employeeName;
     private String userName;
     private String password;
     private String role;

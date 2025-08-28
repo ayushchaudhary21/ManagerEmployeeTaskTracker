@@ -9,6 +9,6 @@ import org.springframework.stereotype.Service;
 public interface EmployeeServiceInterface {
      String createEmpoyee(EmployeeRequestModel employeeRequestModel);
    String deleteByUserName(String userName);
-EmployeeResponseModel updateEmployee(String userName, EmployeeRequestModel employeeRequestModel);
+ EmployeeResponseModel updateEmployee(String userName, EmployeeRequestModel employeeRequestModel);
 
 }

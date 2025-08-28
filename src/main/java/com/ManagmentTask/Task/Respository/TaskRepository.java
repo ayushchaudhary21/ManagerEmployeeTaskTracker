@@ -5,12 +5,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TaskRepository extends JpaRepository<TaskEntity,Long> {
-     List<TaskEntity> findByAssignedBy_EmployeeId(long id);  //taskEntity.assignedBy.employeeId == id
+     List<TaskEntity> findByTaskAssignedBy_EmployeeId(long id);  //taskEntity.assignedBy.employeeId == id
      //  findBy[ObjectField]_[FieldInsideObject]
 
-      List<TaskEntity>findByAssignedTo_EmployeeId(long id);
+      List<TaskEntity> findByTaskAssignedTo_EmployeeId(long id);
+      Optional<TaskEntity>findByTitle(String title);
+
 }
 
