@@ -15,6 +15,5 @@ public class TaskRequestModel {
     private String description;
     private String status;
 
-    private Long assignedToId;
-    private Long assignedById;
+
 }

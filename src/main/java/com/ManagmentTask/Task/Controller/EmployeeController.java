@@ -26,13 +26,13 @@ public class EmployeeController {
         return  new ResponseEntity<>(employeeServiceInterface.deleteByUserName(userName),HttpStatus.OK);
 
     }
-
-    @PutMapping("/update")
-    public ResponseEntity<EmployeeResponseModel> updateEmployee(@RequestBody EmployeeRequestModel employeeRequestModel)
-    {
-        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        String userName=authentication.getName();
-        return new ResponseEntity<>(employeeServiceInterface.updateEmployee(userName,employeeRequestModel),HttpStatus.OK);
-
-    }
+//
+//    @PutMapping("/update")
+//    public ResponseEntity<EmployeeResponseModel> updateEmployee(@RequestBody EmployeeRequestModel employeeRequestModel)
+//    {
+//        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+//        String userName=authentication.getName();
+//        return new ResponseEntity<>(employeeServiceInterface.updateEmployee(userName,employeeRequestModel),HttpStatus.OK);
+//
+//    }
 }

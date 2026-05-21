@@ -24,20 +24,19 @@ public class PublicController {
     @PostMapping("/createEmployee")
     public ResponseEntity<String>createEmployee(@RequestBody EmployeeRequestModel employeeRequestModel)
     {
-        if(employeeRequestModel.getRole().equalsIgnoreCase("employee"))
-        {
+
         return new ResponseEntity<>(employeeServiceInterface.createEmpoyee(employeeRequestModel), HttpStatus.CREATED);
-        }
-        throw new NotDetermineRole("Role is incorrect ");
+
+
     }
-    @PostMapping("/createManager")
-    public ResponseEntity<String>createManager(@RequestBody EmployeeRequestModel employeeRequestModel)
-    {
-        if(employeeRequestModel.getRole().equalsIgnoreCase("manager"))
-        {
-            return new ResponseEntity<>(employeeServiceInterface.createEmpoyee(employeeRequestModel),HttpStatus.CREATED);
-        }
-        throw new NotDetermineRole("Role is not Manager");
-    }
+//    @PostMapping("/createManager")
+//    public ResponseEntity<String>createManager(@RequestBody EmployeeRequestModel employeeRequestModel)
+//    {
+//        if(employeeRequestModel.getRole().equalsIgnoreCase("manager"))
+//        {
+//            return new ResponseEntity<>(employeeServiceInterface.createEmpoyee(employeeRequestModel),HttpStatus.CREATED);
+//        }
+//        throw new NotDetermineRole("Role is not Manager");
+//    }
     
 }

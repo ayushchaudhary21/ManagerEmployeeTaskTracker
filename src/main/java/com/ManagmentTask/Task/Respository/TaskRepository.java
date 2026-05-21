@@ -15,5 +15,6 @@ public interface TaskRepository extends JpaRepository<TaskEntity,Long> {
       List<TaskEntity> findByTaskAssignedTo_EmployeeId(long id);
       Optional<TaskEntity>findByTitle(String title);
 
+
 }
 

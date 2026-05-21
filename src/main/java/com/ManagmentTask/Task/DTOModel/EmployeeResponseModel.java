@@ -1,6 +1,7 @@
 package com.ManagmentTask.Task.DTOModel;
 
 import com.ManagmentTask.Task.Entity.TaskEntity;
+import com.ManagmentTask.Task.Enum.EmployeeRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,11 +14,10 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class EmployeeResponseModel {
-    private long employeeId;
-    private String Employeename;
+    private Long employeeId;
+    private String employeeName;
     private String userName;
-    private String role;
-   private List<TaskEntity> createdBy;
-   private List<TaskEntity>assignedTo;
+    private EmployeeRole role;
+
 
 }

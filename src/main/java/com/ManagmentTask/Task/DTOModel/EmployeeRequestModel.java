@@ -1,5 +1,6 @@
 package com.ManagmentTask.Task.DTOModel;
 
+import com.ManagmentTask.Task.Enum.EmployeeRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,11 +11,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class EmployeeRequestModel {
-    private long employeeId;
+
     private String employeeName;
     private String userName;
     private String password;
-    private String role;
+    private EmployeeRole role;
 
 
 }

@@ -5,6 +5,7 @@ import com.ManagmentTask.Task.DTOModel.EmployeeResponseModel;
 import com.ManagmentTask.Task.Entity.EmployeeEntity;
 import com.ManagmentTask.Task.Exception.DublicateUser;
 import com.ManagmentTask.Task.Exception.EmployeeNotFound;
+import com.ManagmentTask.Task.Mapper.EmployeeMapper;
 import com.ManagmentTask.Task.Respository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,28 +19,26 @@ public class EmployeeService implements EmployeeServiceInterface{
 
     private final EmployeeRepository employeeRepository;
     private final  PasswordEncoder passwordEncoder;
-    public EmployeeService(EmployeeRepository employeeRepository, PasswordEncoder passwordEncoder) {
+    private final EmployeeMapper employeeMapper;
+    public EmployeeService(EmployeeRepository employeeRepository, PasswordEncoder passwordEncoder, EmployeeMapper employeeMapper) {
         this.employeeRepository = employeeRepository;
         this.passwordEncoder = passwordEncoder;
+        this.employeeMapper = employeeMapper;
     }
 
 
 
     @Override
     public String createEmpoyee(EmployeeRequestModel employeeRequestModel) {
-        Optional<EmployeeEntity> employeeEntityOptional =employeeRepository.findByUserName(employeeRequestModel.getUserName());
-        if(employeeEntityOptional.isPresent())throw new DublicateUser("UserName already in use");
-        else{
-            EmployeeEntity employeeEntity=new EmployeeEntity();
-            employeeEntity.setRoles(employeeRequestModel.getRole());
-            employeeEntity.setUserName(employeeRequestModel.getUserName());
-            employeeEntity.setEmployeeName(employeeRequestModel.getEmployeeName());
-            employeeEntity.setPassword(passwordEncoder.encode(employeeRequestModel.getPassword()));
-            employeeRepository.save(employeeEntity);
-            return  "User is Created";
-
-        }
-
+        Optional<EmployeeEntity> employeeEntity=employeeRepository.findByUserName(employeeRequestModel.getUserName());
+              if(employeeEntity.isPresent())
+              {
+                  throw new DublicateUser("username is already present");
+              }
+            EmployeeEntity employee=employeeMapper.dtoToEntity(employeeRequestModel);
+              employee.setPassword(passwordEncoder.encode(employeeRequestModel.getPassword()));
+              employeeRepository.save(employee);
+              return "Welcome your id is generated "+employee.getEmployeeId();
 
     }
     @Override
@@ -51,33 +50,33 @@ public class EmployeeService implements EmployeeServiceInterface{
         }throw new EmployeeNotFound("There is no employee with the id : "+userName);
     }
 
-    @Override
-    public EmployeeResponseModel updateEmployee(String userName, EmployeeRequestModel employeeRequestModel) {
-        Optional<EmployeeEntity> employeeEntityOptional =employeeRepository.findByUserName(userName);
-        if(employeeEntityOptional.isPresent())
-        {
-              EmployeeEntity employeeEntityDb = employeeEntityOptional.get();
-              if(employeeRepository.findByUserName(employeeRequestModel.getUserName()).isPresent())throw new DublicateUser("UserName is already taken");
-              else{
-                  employeeEntityDb.setUserName(employeeRequestModel.getUserName());
-              }
-              if(employeeEntityDb.getEmployeeName()!=null)
-              {
-                  employeeEntityDb.setEmployeeName(employeeRequestModel.getEmployeeName());
-              }
-              if(employeeEntityDb.getPassword()!=null)
-              {
-                  employeeEntityDb.setPassword(passwordEncoder.encode(employeeRequestModel.getPassword()));
-              }
-              employeeRepository.save(employeeEntityDb);
-              return EmployeeResponseModel.builder()
-                      .employeeId(employeeEntityDb.getEmployeeId())
-                      .role(employeeEntityDb.getRoles())
-                      .Employeename(employeeEntityDb.getEmployeeName())
-                      .userName(employeeEntityDb.getUserName())
-                      .assignedTo(List.of())
-                      .assignedTo(List.of()).build();
-        }
-        throw new EmployeeNotFound("There is no employee with the userName : "+userName);
-    }
+//    @Override
+//    public EmployeeResponseModel updateEmployee(String userName, EmployeeRequestModel employeeRequestModel) {
+//        Optional<EmployeeEntity> employeeEntityOptional =employeeRepository.findByUserName(userName);
+//        if(employeeEntityOptional.isPresent())
+//        {
+//              EmployeeEntity employeeEntityDb = employeeEntityOptional.get();
+//              if(employeeRepository.findByUserName(employeeRequestModel.getUserName()).isPresent())throw new DublicateUser("UserName is already taken");
+//              else{
+//                  employeeEntityDb.setUserName(employeeRequestModel.getUserName());
+//              }
+//              if(employeeEntityDb.getEmployeeName()!=null)
+//              {
+//                  employeeEntityDb.setEmployeeName(employeeRequestModel.getEmployeeName());
+//              }
+//              if(employeeEntityDb.getPassword()!=null)
+//              {
+//                  employeeEntityDb.setPassword(passwordEncoder.encode(employeeRequestModel.getPassword()));
+//              }
+//              employeeRepository.save(employeeEntityDb);
+//              return EmployeeResponseModel.builder()
+//                      .employeeId(employeeEntityDb.getEmployeeId())
+//                      .role(employeeEntityDb.getRoles())
+//                      .employeeName(employeeEntityDb.getEmployeeName())
+//                      .userName(employeeEntityDb.getUserName())
+//                      .assignedTo(List.of())
+//                      .assignedTo(List.of()).build();
+//        }
+//        throw new EmployeeNotFound("There is no employee with the userName : "+userName);
+//    }
 }

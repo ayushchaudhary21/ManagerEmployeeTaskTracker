@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class TaskEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private long taskId;
+    private Long taskId;
     private String taskName;
     private String title;
     private String description;
@@ -29,7 +29,7 @@ public class TaskEntity {
     private EmployeeEntity taskAssignedTo;
 
     @ManyToOne
-    @JsonBackReference
+
     @JoinColumn(name="manager_id")
     private EmployeeEntity taskAssignedBy;
 
@@ -37,4 +37,6 @@ public class TaskEntity {
     public void onCreate() {
         this.generatedTime = LocalDateTime.now();
     }
+
+
 }

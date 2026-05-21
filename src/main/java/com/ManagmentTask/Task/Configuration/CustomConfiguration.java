@@ -14,21 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-@EnableAutoConfiguration
-public class CustomConfiguration {
-    @Bean
-    public SecurityFilterChain  customFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.
-                   csrf(csrf->csrf.disable())
-                .authorizeHttpRequests(
-                         auth->auth
-                                 .requestMatchers("/public/**").permitAll()
-                                 .anyRequest().authenticated()
-                ).formLogin(Customizer.withDefaults())
-                .httpBasic(Customizer.withDefaults());
-         return httpSecurity.build();
 
-    }
+public class CustomConfiguration {
 
      @Bean
      public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {

@@ -20,7 +20,7 @@ public class CustomUserServiceDetails implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<EmployeeEntity> employeeEntityOptional= employeeRepository.findByUserName(username);
-        if(!employeeEntityOptional.isPresent())
+        if(employeeEntityOptional.isEmpty())
         {
             throw new UsernameNotFoundException("User does not exits");
 
