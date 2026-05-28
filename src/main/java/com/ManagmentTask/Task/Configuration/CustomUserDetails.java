@@ -14,6 +14,9 @@ public class CustomUserDetails implements UserDetails {
     public CustomUserDetails(EmployeeEntity employeeEntity) {
         this.employeeEntity = employeeEntity;
     }
+    public EmployeeEntity getEmployeeEntity(){
+        return employeeEntity;
+    }
 
     @Override
     public boolean isEnabled() {

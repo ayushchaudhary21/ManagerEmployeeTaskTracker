@@ -30,8 +30,10 @@ public class TaskController {
     public ResponseEntity<String> createtask(@RequestBody TaskRequestModel taskRequestModel,
                                              @PathVariable("id") Long employeeid)
     {
+
         Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
         String userName=authentication.getName();
+        System.out.println(userName);
           return new ResponseEntity<>(taskServiceInterface.generateTask(userName,taskRequestModel,employeeid), HttpStatus.CREATED);
           // The UserName is from the manager that manager could create the task.
     }
@@ -40,6 +42,11 @@ public class TaskController {
     public ResponseEntity<List<TaskResponseModel>> createdTaskByManager()
     {
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+
+
+        if (authentication == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         String userName=authentication.getName();
           return new ResponseEntity<>(taskServiceInterface.returnManagerCreatedTask(userName),HttpStatus.OK);
     }
